@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
+import { AuthContext } from "../contexts/AuthContext";
+import { withSSRGuest } from "../utils/withSSRGuest";
 
 const Container = styled.div`
   width: clamp(70%, 700px, 100%);
@@ -22,12 +25,20 @@ const Container = styled.div`
 `;
 
 export default function SignInPage() {
+  const { signIn } = useContext(AuthContext);
+
   return (
     <Container>
       <div>
-        <SignIn />
+        <SignIn signIn={signIn} />
         <SignUp />
       </div>
     </Container>
   );
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  };
+});
